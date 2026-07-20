@@ -8,8 +8,8 @@ interface AmountBadgeProps {
 export function AmountBadge({ amount, currency }: AmountBadgeProps) {
   const colorClass = currency === 'ARS' ? 'text-money-ars' : 'text-money-usd';
   return (
-    <span className={`font-bold text-base ${colorClass}`}>
-      {formatMoney(amount, currency)}
+    <span className={`whitespace-nowrap text-[22px] font-extrabold ${colorClass}`}>
+      - {formatMoney(amount, currency)}
     </span>
   );
 }

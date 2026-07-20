@@ -1,5 +1,6 @@
 'use client';
 
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { MONTHS } from '@/shared/lib/format';
 import type { MonthRange } from '../../types';
 
@@ -20,21 +21,23 @@ export function MonthNavigator({ range, onChange }: MonthNavigatorProps) {
   }
 
   return (
-    <div className="flex items-center justify-center gap-4 mb-5">
+    <div className="mb-8 flex items-center justify-between px-1 pt-8">
       <button
         onClick={prev}
-        className="bg-dark-card w-9 h-9 rounded-full text-white text-lg flex items-center justify-center hover:bg-dark-accent transition"
+        className="flex size-10 items-center justify-center rounded-full text-finance-secondary transition hover:bg-finance-soft hover:text-finance-text"
+        aria-label="Mes anterior"
       >
-        ‹
+        <ChevronLeft className="size-7" strokeWidth={2.4} />
       </button>
-      <span className="text-base font-semibold min-w-[150px] text-center">
+      <span className="min-w-[190px] text-center text-[23px] font-extrabold leading-none text-finance-text">
         {MONTHS[range.month - 1]} {range.year}
       </span>
       <button
         onClick={next}
-        className="bg-dark-card w-9 h-9 rounded-full text-white text-lg flex items-center justify-center hover:bg-dark-accent transition"
+        className="flex size-10 items-center justify-center rounded-full text-finance-secondary transition hover:bg-finance-soft hover:text-finance-text"
+        aria-label="Mes siguiente"
       >
-        ›
+        <ChevronRight className="size-7" strokeWidth={2.4} />
       </button>
     </div>
   );

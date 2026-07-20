@@ -1,5 +1,5 @@
 import { Card } from '../atoms/Card';
-import { formatMoney } from '@/shared/lib/format';
+import { formatCompactMoney } from '@/shared/lib/format';
 import type { DashboardSummary } from '../../types';
 
 interface SummaryCardsProps {
@@ -8,10 +8,10 @@ interface SummaryCardsProps {
 
 export function SummaryCards({ summary }: SummaryCardsProps) {
   return (
-    <div className="grid grid-cols-2 gap-3 mb-5">
-      <Card label="Total ARS" value={formatMoney(summary.totalARS)} />
-      <Card label="Total USD" value={formatMoney(summary.totalUSD, 'USD')} />
-      <Card label="Gastos" value={String(summary.expenseCount)} small />
+    <div className="mb-8 grid grid-cols-2 gap-4">
+      <Card label="Total ARS" value={formatCompactMoney(summary.totalARS)} />
+      <Card label="Total USD" value={formatCompactMoney(summary.totalUSD, 'USD')} />
+      <Card label="Cant. gastos" value={String(summary.expenseCount)} small />
       <Card label="Categorías" value={String(summary.categoryCount)} small />
     </div>
   );

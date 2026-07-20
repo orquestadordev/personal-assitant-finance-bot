@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Banknote, ChartPie, Grid2X2, type LucideIcon } from 'lucide-react';
 import { MonthNavigator } from '../atoms/MonthNavigator';
 import { SummaryCards } from '../molecules/SummaryCards';
+import { DashboardLoadingView } from './DashboardLoadingView';
 import { CategoryChart } from '@/features/categories/ui/organisms/CategoryChart';
 import { TypePieChart } from '@/features/categories/ui/organisms/TypePieChart';
 import { ExpensesTemplate } from '@/features/expenses/ui/templates/ExpensesTemplate';
@@ -12,18 +14,18 @@ import type { Expense } from '@/shared/types/database';
 
 type Tab = 'resumen' | 'gastos' | 'tipo';
 
-const TABS: { key: Tab; label: string }[] = [
-  { key: 'resumen', label: 'Resumen' },
-  { key: 'gastos', label: 'Gastos' },
-  { key: 'tipo', label: 'Por tipo' },
-];
+const TABS = [
+  { key: 'resumen', label: 'Resumen', icon: Grid2X2 },
+  { key: 'gastos', label: 'Gastos', icon: Banknote },
+  { key: 'tipo', label: 'Por tipo', icon: ChartPie },
+] satisfies { key: Tab; label: string; icon: LucideIcon }[];
 
-export function DashboardView() {
-  const now = new Date();
-  const [range, setRange] = useState<MonthRange>({
-    year: now.getFullYear(),
-    month: now.getMonth() + 1,
-  });
+interface DashboardViewProps {
+  initialRange: MonthRange;
+}
+
+export function DashboardView({ initialRange }: DashboardViewProps) {
+  const [range, setRange] = useState<MonthRange>(initialRange);
   const [tab, setTab] = useState<Tab>('resumen');
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -46,24 +48,42 @@ export function DashboardView() {
   }, [range]);
 
   if (loading) {
-    return <div className="text-center text-gray-500 py-10">Cargando...</div>;
+    return (
+      <DashboardLoadingView
+        activeTab={tab}
+        range={range}
+        tabs={TABS}
+        onRangeChange={setRange}
+        onTabChange={(nextTab) => setTab(nextTab as Tab)}
+      />
+    );
   }
 
   if (!summary) {
-    return <div className="text-center text-gray-500 py-10">Error al cargar datos</div>;
+    return <div className="px-7 py-10 text-center text-finance-muted">Error al cargar datos</div>;
   }
 
   return (
-    <>
-      <MonthNavigator range={range} onChange={setRange} />
-      <SummaryCards summary={summary} />
-      <TabNavigation tabs={TABS} activeKey={tab} onChange={(t) => setTab(t as Tab)} />
-
-      {tab === 'resumen' && <CategoryChart data={summary.byCategory} />}
-      {tab === 'gastos' && (
-        <ExpensesTemplate expenses={expenses} />
+    <div className="px-7 pb-32">
+      {tab === 'resumen' && (
+        <>
+          <MonthNavigator range={range} onChange={setRange} />
+          <SummaryCards summary={summary} />
+          <CategoryChart data={summary.byCategory} />
+          <TypePieChart data={summary.byType} compact />
+        </>
       )}
-      {tab === 'tipo' && <TypePieChart data={summary.byType} />}
-    </>
+
+      {tab === 'gastos' && <ExpensesTemplate expenses={expenses} />}
+
+      {tab === 'tipo' && (
+        <>
+          <MonthNavigator range={range} onChange={setRange} />
+          <TypePieChart data={summary.byType} expenses={expenses} />
+        </>
+      )}
+
+      <TabNavigation tabs={TABS} activeKey={tab} onChange={(t) => setTab(t as Tab)} />
+    </div>
   );
 }

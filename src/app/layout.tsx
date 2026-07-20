@@ -6,10 +6,15 @@ export const metadata: Metadata = {
   description: 'Dashboard de gastos personales',
   manifest: '/manifest.json',
   icons: { apple: '/icon-192.png' },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Finanzas',
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#1a1a2e',
+  themeColor: '#08110d',
   width: 'device-width',
   initialScale: 1,
 };
@@ -21,10 +26,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="bg-dark-bg text-white antialiased">
-        <main className="mx-auto max-w-md min-h-dvh px-4 py-6">
+      <body className="bg-finance-bg text-finance-text antialiased">
+        <main className="mx-auto min-h-dvh max-w-[430px] bg-finance-bg">
           {children}
         </main>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );

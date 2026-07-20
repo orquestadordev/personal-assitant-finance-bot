@@ -19,8 +19,12 @@ export function ExpensesTemplate({ expenses }: ExpensesTemplateProps) {
     : expenses.filter((e) => e.currency === currencyFilter);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-2 overflow-x-auto pb-1">
+    <section className="pt-9">
+      <h2 className="mb-8 text-[34px] font-extrabold leading-none text-finance-text">
+        Gastos Recientes
+      </h2>
+
+      <div className="mb-10 flex gap-3 overflow-x-auto pb-1">
         {CURRENCY_FILTERS.map((f) => (
           <FilterChip
             key={f}
@@ -31,6 +35,6 @@ export function ExpensesTemplate({ expenses }: ExpensesTemplateProps) {
         ))}
       </div>
       <ExpenseList expenses={filtered} />
-    </div>
+    </section>
   );
 }

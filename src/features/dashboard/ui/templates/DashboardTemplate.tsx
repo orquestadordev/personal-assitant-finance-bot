@@ -1,13 +1,16 @@
+import { AppHeader } from '@/shared/ui/molecules/AppHeader';
 import { DashboardView } from '../organisms/DashboardView';
+import type { MonthRange } from '../../types';
 
-export function DashboardTemplate() {
+interface DashboardTemplateProps {
+  initialRange: MonthRange;
+}
+
+export function DashboardTemplate({ initialRange }: DashboardTemplateProps) {
   return (
-    <div className="max-w-[600px] mx-auto px-4 py-4">
-      <header className="text-center py-5">
-        <h1 className="text-2xl font-bold text-white">Finanzas Personales</h1>
-        <p className="text-gray-500 text-sm mt-1">Dashboard</p>
-      </header>
-      <DashboardView />
+    <div className="min-h-dvh bg-finance-bg">
+      <AppHeader />
+      <DashboardView initialRange={initialRange} />
     </div>
   );
 }

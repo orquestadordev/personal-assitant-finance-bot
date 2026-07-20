@@ -10,10 +10,10 @@ export function FilterChip({ label, active, onClick }: FilterChipProps) {
   return (
     <button
       onClick={onClick}
-      className={`px-3.5 py-1.5 rounded-full text-sm whitespace-nowrap transition
+      className={`rounded-pill px-7 py-3 text-[15px] font-extrabold tracking-[0.04em] transition
         ${active
-          ? 'bg-dark-accent border-dark-accent text-white'
-          : 'bg-transparent border border-gray-700 text-gray-400 hover:border-gray-500'
+          ? 'bg-finance-primary text-finance-bg'
+          : 'bg-finance-soft text-finance-secondary ring-1 ring-finance-stroke/60 hover:text-finance-text'
         }`}
     >
       {label}
