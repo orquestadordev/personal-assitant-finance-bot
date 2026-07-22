@@ -10,6 +10,7 @@ import { CategoryChart } from '@/features/categories/ui/organisms/CategoryChart'
 import { TypePieChart } from '@/features/categories/ui/organisms/TypePieChart';
 import { ExpensesTemplate } from '@/features/expenses/ui/templates/ExpensesTemplate';
 import { TabNavigation } from '@/shared/ui/molecules/TabNavigation';
+import { Toast } from '@/shared/ui/atoms/Toast';
 import type { DashboardSummary, MonthRange } from '../../types';
 import type { Expense } from '@/shared/types/database';
 
@@ -31,6 +32,7 @@ export function DashboardView({ initialRange }: DashboardViewProps) {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState<string | null>(null);
 
   const loadData = useCallback(async (showLoader = false) => {
     if (showLoader) setLoading(true);
@@ -49,8 +51,11 @@ export function DashboardView({ initialRange }: DashboardViewProps) {
     loadData(true);
   }, [loadData]);
 
-  // Realtime: refrescar sin loader cuando llega un nuevo gasto
-  useRealtimeExpenses(() => loadData(false));
+  // Realtime: refrescar y mostrar toast cuando llega un nuevo gasto
+  useRealtimeExpenses(() => {
+    loadData(false);
+    setToast('Nuevo gasto registrado');
+  });
 
   if (loading) {
     return (
@@ -70,6 +75,11 @@ export function DashboardView({ initialRange }: DashboardViewProps) {
 
   return (
     <div className="px-7 pb-32">
+      <Toast
+        message={toast || ''}
+        visible={!!toast}
+        onDismiss={() => setToast(null)}
+      />
       {tab === 'resumen' && (
         <>
           <MonthNavigator range={range} onChange={setRange} />

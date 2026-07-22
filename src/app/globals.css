@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark theme (default) */
 :root {
   --color-app-bg: 8 17 13;
   --color-surface: 20 29 24;
@@ -15,6 +16,22 @@
   --color-text-secondary: 183 195 187;
   --color-text-muted: 126 139 130;
   --color-stroke: 42 56 48;
+}
+
+/* Light theme  */
+:root.light {
+  --color-app-bg: 245 247 246;
+  --color-surface: 255 255 255;
+  --color-surface-raised: 249 251 250;
+  --color-surface-soft: 235 240 237;
+  --color-nav: 255 255 255;
+  --color-primary: 56 178 140;
+  --color-money-ars: 34 153 115;
+  --color-money-usd: 30 136 229;
+  --color-text-primary: 28 38 33;
+  --color-text-secondary: 90 105 95;
+  --color-text-muted: 145 158 150;
+  --color-stroke: 215 225 218;
 }
 
 html,

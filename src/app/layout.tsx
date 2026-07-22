@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from 'next';
+import { ThemeProvider } from '@/shared/providers/ThemeProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Finanzas Personales',
   description: 'Dashboard de gastos personales',
   manifest: '/manifest.json',
-  icons: { apple: '/icon-192.png' },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '32x32' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
@@ -25,16 +32,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <body className="bg-finance-bg text-finance-text antialiased">
-        <main className="mx-auto min-h-dvh max-w-[430px] bg-finance-bg">
-          {children}
-        </main>
+        <ThemeProvider>
+          <main className="mx-auto min-h-dvh max-w-[430px] bg-finance-bg">
+            {children}
+          </main>
+        </ThemeProvider>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
+                window.addEventListener('load', function() {
                   navigator.serviceWorker.register('/sw.js');
                 });
               }
