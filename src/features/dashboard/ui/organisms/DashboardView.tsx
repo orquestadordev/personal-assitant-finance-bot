@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Banknote, ChartPie, Grid2X2, type LucideIcon } from 'lucide-react';
+import { useRealtimeExpenses } from '@/shared/hooks/useRealtimeExpenses';
 import { MonthNavigator } from '../atoms/MonthNavigator';
 import { SummaryCards } from '../molecules/SummaryCards';
 import { DashboardLoadingView } from './DashboardLoadingView';
@@ -31,21 +32,25 @@ export function DashboardView({ initialRange }: DashboardViewProps) {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/dashboard?year=${range.year}&month=${range.month}`);
-        const data = await res.json();
-        setSummary(data.summary);
-        setExpenses(data.expenses);
-      } catch (err) {
-        console.error('Error loading dashboard:', err);
-      }
-      setLoading(false);
+  const loadData = useCallback(async (showLoader = false) => {
+    if (showLoader) setLoading(true);
+    try {
+      const res = await fetch(`/api/dashboard?year=${range.year}&month=${range.month}`);
+      const data = await res.json();
+      setSummary(data.summary);
+      setExpenses(data.expenses);
+    } catch (err) {
+      console.error('Error loading dashboard:', err);
     }
-    load();
+    if (showLoader) setLoading(false);
   }, [range]);
+
+  useEffect(() => {
+    loadData(true);
+  }, [loadData]);
+
+  // Realtime: refrescar sin loader cuando llega un nuevo gasto
+  useRealtimeExpenses(() => loadData(false));
 
   if (loading) {
     return (
