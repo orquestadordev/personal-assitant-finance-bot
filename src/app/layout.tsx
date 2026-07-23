@@ -33,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className="bg-finance-bg text-finance-text antialiased">
+      <body className="bg-finance-bg text-finance-text antialiased" suppressHydrationWarning>
         <ThemeProvider>
           <main className="mx-auto min-h-dvh max-w-[430px] bg-finance-bg">
             {children}

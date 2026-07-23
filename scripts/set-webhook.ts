@@ -4,8 +4,6 @@ dotenv.config({ path: '.env.local' });
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
 
-console.log('BOT TOKEN', BOT_TOKEN);
-console.log('WEBHOOK', WEBHOOK_URL);
 
 if (!BOT_TOKEN || !WEBHOOK_URL) {
   console.error('Falta BOT_TOKEN o WEBHOOK_URL en .env');
