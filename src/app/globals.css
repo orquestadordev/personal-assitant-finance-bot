@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 /* Dark theme (default) */
-:root {
+:root,
+:root.dark {
   --color-app-bg: 8 17 13;
   --color-surface: 20 29 24;
   --color-surface-raised: 23 32 27;
